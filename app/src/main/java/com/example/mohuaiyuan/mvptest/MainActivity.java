@@ -70,7 +70,6 @@ public class MainActivity extends BaseActivity implements MvpView  {
     };
 
     private void initData() {
-
         //初始化Presenter
         presenter = new MvpPresenter();
         // 绑定View引用
