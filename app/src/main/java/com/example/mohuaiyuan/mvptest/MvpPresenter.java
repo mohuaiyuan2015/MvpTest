@@ -17,7 +17,7 @@ public class MvpPresenter extends BasePresenter<MvpView>{
         // 调用Model请求数据
         DataModel
                 // 设置请求标识token
-                .request(Token.API_USER_DATA)
+                .request(UserDataModel.class)
                 // 添加请求参数，没有则不添加
                 .params(params)
                 // 注册监听回调

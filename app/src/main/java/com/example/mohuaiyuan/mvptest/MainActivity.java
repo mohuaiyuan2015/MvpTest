@@ -18,6 +18,9 @@ public class MainActivity extends BaseActivity implements MvpView  {
     private Button failureResult;
     private Button errorResult;
 
+    private ProgressDialog mProgressDialog;
+
+
     MvpPresenter presenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +73,10 @@ public class MainActivity extends BaseActivity implements MvpView  {
     };
 
     private void initData() {
+
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setCancelable(false);
+
         //初始化Presenter
         presenter = new MvpPresenter();
         // 绑定View引用
@@ -98,8 +105,18 @@ public class MainActivity extends BaseActivity implements MvpView  {
 
 
     @Override
+    public void hideLoading() {
+        if (mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+        }
+    }
+
+
+    @Override
     public void showLoading() {
-        super.showLoading();
+        if (!mProgressDialog.isShowing()) {
+            mProgressDialog.show();
+        }
         String str=text.getText().toString();
         if(!TextUtils.isEmpty(str)){
             text.setText("");
