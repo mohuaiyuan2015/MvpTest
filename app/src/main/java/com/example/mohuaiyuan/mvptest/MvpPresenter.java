@@ -1,41 +1,46 @@
 package com.example.mohuaiyuan.mvptest;
 
-public class MvpPresenter {
-    // View接口
-    private MvpView mView;
+import com.example.mohuaiyuan.civilian.BasePresenter;
 
-    public MvpPresenter(MvpView view){
-        this.mView = view;
-    }
+public class MvpPresenter extends BasePresenter<MvpView>{
+
     /**
      * 获取网络数据
      * @param params 参数
      */
     public void getData(String params){
         //显示正在加载进度条
-        mView.showLoading();
+        getView().showLoading();
         // 调用Model请求数据
-        MvpModel.getNetData(params, new MvpCallback() {
+        MvpModel.getNetData(params,new MvpCallback<String>(){
             @Override
             public void onSuccess(String data) {
                 //调用view接口显示数据
-                mView.showData(data);
+                if(isViewAttached()){
+                    getView().showData(data);
+                }
             }
             @Override
             public void onFailure(String msg) {
                 //调用view接口提示失败信息
-                mView.showFailureMessage(msg);
+                if(isViewAttached()){
+                    getView().showFailureMessage(msg);
+                }
             }
             @Override
             public void onError() {
                 //调用view接口提示请求异常
-                mView.showErrorMessage();
+                if(isViewAttached()){
+                    getView().showErrorMessage();
+                }
             }
             @Override
             public void onComplete() {
                 // 隐藏正在加载进度条
-                mView.hideLoading();
+                if(isViewAttached()){
+                    getView().hideLoading();
+                }
             }
-        });
+        } );
     }
 }

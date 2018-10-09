@@ -9,9 +9,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity implements MvpView  {
-    //进度条
-    ProgressDialog progressDialog;
+import com.example.mohuaiyuan.civilian.BaseActivity;
+
+public class MainActivity extends BaseActivity implements MvpView  {
+
     private  TextView text;
     private Button successResult;
     private Button failureResult;
@@ -69,12 +70,11 @@ public class MainActivity extends AppCompatActivity implements MvpView  {
     };
 
     private void initData() {
-        // 初始化进度条
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage("正在加载数据");
+
         //初始化Presenter
-        presenter = new MvpPresenter(this);
+        presenter = new MvpPresenter();
+        // 绑定View引用
+        presenter.attachView(this);
     }
 
     private void initUI() {
@@ -96,33 +96,38 @@ public class MainActivity extends AppCompatActivity implements MvpView  {
     public void getDataForError(){
         presenter.getData("error");
     }
+
+
     @Override
     public void showLoading() {
-        if (!progressDialog.isShowing()) {
-            progressDialog.show();
-        }
+        super.showLoading();
         String str=text.getText().toString();
         if(!TextUtils.isEmpty(str)){
             text.setText("");
         }
+    }
 
-    }
-    @Override
-    public void hideLoading() {
-        if (progressDialog.isShowing()) {
-            progressDialog.dismiss();
-        }
-    }
     @Override
     public void showData(String data) {
         text.setText(data);
     }
+
     @Override
     public void showFailureMessage(String msg) {
         text.setText(msg);
     }
+
     @Override
     public void showErrorMessage() {
         text.setText("网络请求数据出现异常");
     }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // 断开View引用
+        presenter.detachView();
+    }
+
 }

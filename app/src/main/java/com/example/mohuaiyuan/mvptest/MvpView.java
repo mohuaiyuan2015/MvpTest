@@ -1,14 +1,9 @@
 package com.example.mohuaiyuan.mvptest;
 
-public interface MvpView {
-    /**
-     * 显示正在加载进度框
-     */
-    void showLoading();
-    /**
-     * 隐藏正在加载进度框
-     */
-    void hideLoading();
+import com.example.mohuaiyuan.civilian.BaseView;
+
+public interface MvpView extends BaseView {
+
     /**
      * 当数据请求成功后，调用此接口显示数据
      * @param data 数据源
